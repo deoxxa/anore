@@ -144,5 +144,50 @@ describe("Model", function() {
       assert.instanceOf(model.get("x"), Anore.Primitive);
       assert.equal(model.get("x").type(), "string");
     });
+
+    it("should emit an `add' event if the property does not already exist", function(done) {
+      var property = new Anore.Primitive("x");
+
+      var model = new Anore.Model();
+
+      model.on("add", function(name, value) {
+        assert.equal(name, "x");
+        assert.strictEqual(value, property);
+
+        return done();
+      });
+
+      model.set("x", property);
+    });
+
+    it("should not emit an `add' event if the property does already exist", function(done) {
+      var property = new Anore.Primitive("x");
+
+      var timeoutHandle = setTimeout(done, 5);
+
+      var model = new Anore.Model({x: null});
+
+      model.on("add", function(name, value) {
+        clearTimeout(timeoutHandle);
+        return done(Error("shouldn't emit an event"));
+      });
+
+      model.set("x", property);
+    });
+
+    it("should emit a `change' event if the property changes", function(done) {
+      var property = new Anore.Primitive("x");
+
+      var model = new Anore.Model({x: "y"});
+
+      model.on("change", function(name, value) {
+        assert.equal(name, "x");
+        assert.strictEqual(value, property);
+
+        return done();
+      });
+
+      model.set("x", property);
+    });
   });
 });
