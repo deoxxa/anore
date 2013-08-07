@@ -41,4 +41,42 @@ describe("Model", function() {
       assert.isFalse(model.has("x.z"));
     });
   });
+
+  describe("#get(path)", function() {
+    it("should return the correct attribute if it is directly accessible", function() {
+      var property = new Anore.Primitive("y");
+
+      var model = new Anore.Model({x: property});
+
+      assert.strictEqual(model.get("x"), property);
+    });
+
+    it("should return the correct attribute if it is indirectly accessible", function() {
+      var property = new Anore.Primitive("y");
+
+      var model = new Anore.Model({x: {y: property}});
+
+      assert.strictEqual(model.get("x.y"), property);
+    });
+
+    it("should return the correct attribute if the path is supplied as an array", function() {
+      var property = new Anore.Primitive("y");
+
+      var model = new Anore.Model({x: {y: property}});
+
+      assert.strictEqual(model.get(["x", "y"]), property);
+    });
+
+    it("should return undefined if an attribute is not directly accessible", function() {
+      var model = new Anore.Model({x: "y"});
+
+      assert.isUndefined(model.get("z"));
+    });
+
+    it("should return undefined if an attribute is not indirectly accessible", function() {
+      var model = new Anore.Model({x: {y: "z"}});
+
+      assert.isUndefined(model.get("x.z"));
+    });
+  });
 });
