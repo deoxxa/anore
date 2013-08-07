@@ -79,4 +79,70 @@ describe("Model", function() {
       assert.isUndefined(model.get("x.z"));
     });
   });
+
+  describe("#set(key, value, options)", function() {
+    it("should set the correct property", function() {
+      var property = new Anore.Primitive("x");
+
+      var model = new Anore.Model();
+
+      model.set("x", property);
+
+      assert.strictEqual(model.get("x"), property);
+    });
+
+    it("should box `false'", function() {
+      var model = new Anore.Model();
+
+      model.set("x", false);
+
+      assert.instanceOf(model.get("x"), Anore.Primitive);
+      assert.equal(model.get("x").type(), "boolean");
+    });
+
+    it("should box `true'", function() {
+      var model = new Anore.Model();
+
+      model.set("x", true);
+
+      assert.instanceOf(model.get("x"), Anore.Primitive);
+      assert.equal(model.get("x").type(), "boolean");
+    });
+
+    it("should box `null'", function() {
+      var model = new Anore.Model();
+
+      model.set("x", null);
+
+      assert.instanceOf(model.get("x"), Anore.Primitive);
+      assert.equal(model.get("x").type(), "null");
+    });
+
+    it("should box an integer", function() {
+      var model = new Anore.Model();
+
+      model.set("x", 1);
+
+      assert.instanceOf(model.get("x"), Anore.Primitive);
+      assert.equal(model.get("x").type(), "integer");
+    });
+
+    it("should box a floating-point number", function() {
+      var model = new Anore.Model();
+
+      model.set("x", 1.5);
+
+      assert.instanceOf(model.get("x"), Anore.Primitive);
+      assert.equal(model.get("x").type(), "number");
+    });
+
+    it("should box a string", function() {
+      var model = new Anore.Model();
+
+      model.set("x", "x");
+
+      assert.instanceOf(model.get("x"), Anore.Primitive);
+      assert.equal(model.get("x").type(), "string");
+    });
+  });
 });
