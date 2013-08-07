@@ -28,5 +28,17 @@ describe("Model", function() {
 
       assert.isTrue(model.has(["x", "y"]));
     });
+
+    it("should return false if an attribute is not directly accessible", function() {
+      var model = new Anore.Model({x: "y"});
+
+      assert.isFalse(model.has("z"));
+    });
+
+    it("should return false if an attribute is not indirectly accessible", function() {
+      var model = new Anore.Model({x: {y: "z"}});
+
+      assert.isFalse(model.has("x.z"));
+    });
   });
 });
