@@ -1,0 +1,35 @@
+{
+  "name": "anore",
+  "version": "0.0.0",
+  "description": "Models. Or at least part of them.",
+  "main": "anore.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/deoxxa/anore.git"
+  },
+  "keywords": [
+    "model",
+    "collection",
+    "primitive",
+    "collection",
+    "string",
+    "number",
+    "observe",
+    "event"
+  ],
+  "author": "Conrad Pankoff <deoxxa@fknsrs.biz> (http://www.fknsrs.biz/)",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/deoxxa/anore/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.0",
+    "browserify": "~2.25.1",
+    "uglify-js": "~2.3.6",
+    "chai": "~1.7.2"
+  },
+  "scripts": {
+    "prepublish": "browserify -s Anore -o anore.build.js anore.js && uglifyjs -o anore.min.js anore.build.js",
+    "test": "mocha -R tap"
+  }
+}
