@@ -191,6 +191,21 @@ describe("Model", function() {
 
       model.set("abc", property);
     });
+
+    it("should propagate a `change' event if a primitive changes", function(done) {
+      var property = new Anore.Primitive("abc");
+
+      var model = new Anore.Model({abc: property});
+
+      model.on("change", function(name, value) {
+        assert.isArray(name);
+        assert.deepEqual(name, ["abc"]);
+        assert.strictEqual(value, property);
+
+        return done();
+      });
+
+      property.set("hello");
     });
   });
 });
