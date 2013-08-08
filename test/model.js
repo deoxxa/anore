@@ -151,6 +151,7 @@ describe("Model", function() {
       var model = new Anore.Model();
 
       model.on("add", function(name, value) {
+        assert.isArray(name);
         assert.deepEqual(name, ["abc"]);
         assert.strictEqual(value, property);
 
@@ -181,6 +182,7 @@ describe("Model", function() {
       var model = new Anore.Model({abc: "xyz"});
 
       model.on("change", function(name, value) {
+        assert.isArray(name);
         assert.deepEqual(name, ["abc"]);
         assert.strictEqual(value, property);
 
