@@ -12,182 +12,183 @@ describe("Model", function() {
 
   describe("#has(path)", function() {
     it("should return true if an attribute is directly accessible", function() {
-      var model = new Anore.Model({x: "y"});
+      var model = new Anore.Model({abc: "xyz"});
 
-      assert.isTrue(model.has("x"));
+      assert.isTrue(model.has("abc"));
     });
 
     it("should return true if an attribute is indirectly accessible", function() {
-      var model = new Anore.Model({x: {y: "z"}});
+      var model = new Anore.Model({abc: {xyz: "qwerty"}});
 
-      assert.isTrue(model.has("x.y"));
+      assert.isTrue(model.has("abc.xyz"));
     });
 
     it("should return true if the path is supplied as an array", function() {
-      var model = new Anore.Model({x: {y: "z"}});
+      var model = new Anore.Model({abc: {xyz: "qwerty"}});
 
-      assert.isTrue(model.has(["x", "y"]));
+      assert.isTrue(model.has(["abc", "xyz"]));
     });
 
     it("should return false if an attribute is not directly accessible", function() {
-      var model = new Anore.Model({x: "y"});
+      var model = new Anore.Model({abc: "xyz"});
 
-      assert.isFalse(model.has("z"));
+      assert.isFalse(model.has("xxx"));
     });
 
     it("should return false if an attribute is not indirectly accessible", function() {
-      var model = new Anore.Model({x: {y: "z"}});
+      var model = new Anore.Model({abc: {xyz: "qwerty"}});
 
-      assert.isFalse(model.has("x.z"));
+      assert.isFalse(model.has("abc.xxx"));
     });
   });
 
   describe("#get(path)", function() {
     it("should return the correct attribute if it is directly accessible", function() {
-      var property = new Anore.Primitive("y");
+      var property = new Anore.Primitive("xyz");
 
-      var model = new Anore.Model({x: property});
+      var model = new Anore.Model({abc: property});
 
-      assert.strictEqual(model.get("x"), property);
+      assert.strictEqual(model.get("abc"), property);
     });
 
     it("should return the correct attribute if it is indirectly accessible", function() {
-      var property = new Anore.Primitive("y");
+      var property = new Anore.Primitive("xyz");
 
-      var model = new Anore.Model({x: {y: property}});
+      var model = new Anore.Model({abc: {xyz: property}});
 
-      assert.strictEqual(model.get("x.y"), property);
+      assert.strictEqual(model.get("abc.xyz"), property);
     });
 
     it("should return the correct attribute if the path is supplied as an array", function() {
-      var property = new Anore.Primitive("y");
+      var property = new Anore.Primitive("xyz");
 
-      var model = new Anore.Model({x: {y: property}});
+      var model = new Anore.Model({abc: {xyz: property}});
 
-      assert.strictEqual(model.get(["x", "y"]), property);
+      assert.strictEqual(model.get(["abc", "xyz"]), property);
     });
 
     it("should return undefined if an attribute is not directly accessible", function() {
-      var model = new Anore.Model({x: "y"});
+      var model = new Anore.Model({abc: "xyz"});
 
-      assert.isUndefined(model.get("z"));
+      assert.isUndefined(model.get("qwerty"));
     });
 
     it("should return undefined if an attribute is not indirectly accessible", function() {
-      var model = new Anore.Model({x: {y: "z"}});
+      var model = new Anore.Model({abc: {xyz: "qwerty"}});
 
-      assert.isUndefined(model.get("x.z"));
+      assert.isUndefined(model.get("abc.xxx"));
     });
   });
 
   describe("#set(key, value, options)", function() {
     it("should set the correct property", function() {
-      var property = new Anore.Primitive("x");
+      var property = new Anore.Primitive("abc");
 
       var model = new Anore.Model();
 
-      model.set("x", property);
+      model.set("abc", property);
 
-      assert.strictEqual(model.get("x"), property);
+      assert.strictEqual(model.get("abc"), property);
     });
 
     it("should box `false'", function() {
       var model = new Anore.Model();
 
-      model.set("x", false);
+      model.set("abc", false);
 
-      assert.instanceOf(model.get("x"), Anore.Primitive);
-      assert.equal(model.get("x").type(), "boolean");
+      assert.instanceOf(model.get("abc"), Anore.Primitive);
+      assert.equal(model.get("abc").type(), "boolean");
     });
 
     it("should box `true'", function() {
       var model = new Anore.Model();
 
-      model.set("x", true);
+      model.set("abc", true);
 
-      assert.instanceOf(model.get("x"), Anore.Primitive);
-      assert.equal(model.get("x").type(), "boolean");
+      assert.instanceOf(model.get("abc"), Anore.Primitive);
+      assert.equal(model.get("abc").type(), "boolean");
     });
 
     it("should box `null'", function() {
       var model = new Anore.Model();
 
-      model.set("x", null);
+      model.set("abc", null);
 
-      assert.instanceOf(model.get("x"), Anore.Primitive);
-      assert.equal(model.get("x").type(), "null");
+      assert.instanceOf(model.get("abc"), Anore.Primitive);
+      assert.equal(model.get("abc").type(), "null");
     });
 
     it("should box an integer", function() {
       var model = new Anore.Model();
 
-      model.set("x", 1);
+      model.set("abc", 1);
 
-      assert.instanceOf(model.get("x"), Anore.Primitive);
-      assert.equal(model.get("x").type(), "integer");
+      assert.instanceOf(model.get("abc"), Anore.Primitive);
+      assert.equal(model.get("abc").type(), "integer");
     });
 
     it("should box a floating-point number", function() {
       var model = new Anore.Model();
 
-      model.set("x", 1.5);
+      model.set("abc", 1.5);
 
-      assert.instanceOf(model.get("x"), Anore.Primitive);
-      assert.equal(model.get("x").type(), "number");
+      assert.instanceOf(model.get("abc"), Anore.Primitive);
+      assert.equal(model.get("abc").type(), "number");
     });
 
     it("should box a string", function() {
       var model = new Anore.Model();
 
-      model.set("x", "x");
+      model.set("abc", "abc");
 
-      assert.instanceOf(model.get("x"), Anore.Primitive);
-      assert.equal(model.get("x").type(), "string");
+      assert.instanceOf(model.get("abc"), Anore.Primitive);
+      assert.equal(model.get("abc").type(), "string");
     });
 
     it("should emit an `add' event if the property does not already exist", function(done) {
-      var property = new Anore.Primitive("x");
+      var property = new Anore.Primitive("abc");
 
       var model = new Anore.Model();
 
       model.on("add", function(name, value) {
-        assert.equal(name, "x");
+        assert.deepEqual(name, ["abc"]);
         assert.strictEqual(value, property);
 
         return done();
       });
 
-      model.set("x", property);
+      model.set("abc", property);
     });
 
     it("should not emit an `add' event if the property does already exist", function(done) {
-      var property = new Anore.Primitive("x");
+      var property = new Anore.Primitive("abc");
 
       var timeoutHandle = setTimeout(done, 5);
 
-      var model = new Anore.Model({x: null});
+      var model = new Anore.Model({abc: null});
 
       model.on("add", function(name, value) {
         clearTimeout(timeoutHandle);
         return done(Error("shouldn't emit an event"));
       });
 
-      model.set("x", property);
+      model.set("abc", property);
     });
 
     it("should emit a `change' event if the property changes", function(done) {
-      var property = new Anore.Primitive("x");
+      var property = new Anore.Primitive("abc");
 
-      var model = new Anore.Model({x: "y"});
+      var model = new Anore.Model({abc: "xyz"});
 
       model.on("change", function(name, value) {
-        assert.equal(name, "x");
+        assert.deepEqual(name, ["abc"]);
         assert.strictEqual(value, property);
 
         return done();
       });
 
-      model.set("x", property);
+      model.set("abc", property);
+    });
     });
   });
 });
