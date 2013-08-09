@@ -286,4 +286,21 @@ describe("Model", function() {
       model.get("abc").get("xyz").set("hello");
     });
   });
+
+  describe("#remove(key)", function() {
+    it("should trigger a `removed' event on a property that is removed", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var model = new Anore.Model({x: property});
+
+      property.on("removed", function(parent, key) {
+        assert.strictEqual(parent, model);
+        assert.equal(key, "x");
+
+        return done();
+      });
+
+      model.remove("x");
+    });
+  });
 });
