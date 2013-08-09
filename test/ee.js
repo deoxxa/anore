@@ -378,5 +378,19 @@ describe("EE", function() {
 
       ee.emit("a", "x", "y");
     });
+
+    it("should handle having handlers removed mid-emission", function(done) {
+      var ee = new Anore.EE();
+
+      var toRemove = function() {
+        ee.off("a", toRemove);
+      };
+
+      ee.on("a", toRemove);
+
+      ee.on("a", done);
+
+      ee.emit("a");
+    });
   });
 });
