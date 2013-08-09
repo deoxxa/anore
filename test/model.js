@@ -350,6 +350,21 @@ describe("Model", function() {
   });
 
   describe("#remove(key)", function() {
+    it("should trigger a `remove' event if a property is removed", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var model = new Anore.Model({x: property});
+
+      model.on("remove", function(key, previousValue) {
+        assert.strictEqual(previousValue, property);
+        assert.equal(key, "x");
+
+        return done();
+      });
+
+      model.remove("x");
+    });
+
     it("should trigger a `removedFrom' event on a property that is removed", function(done) {
       var property = new Anore.Primitive("hello");
 
