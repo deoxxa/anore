@@ -286,6 +286,23 @@ describe("Model", function() {
       model.get("abc").get("xyz").set("hello");
     });
 
+    it("should trigger a `replacedBy' event on a property that is being replaced by another", function(done) {
+      var propertyA = new Anore.Primitive("hello"),
+          propertyB = new Anore.Primitive("hi there");
+
+      var model = new Anore.Model({x: propertyA});
+
+      propertyA.on("replacedBy", function(parent, key, replacedBy) {
+        assert.strictEqual(parent, model);
+        assert.equal(key, "x");
+        assert.strictEqual(replacedBy, propertyB);
+
+        return done();
+      });
+
+      model.set("x", propertyB);
+    });
+
     it("should trigger a `removedFrom' event on a property that is removed", function(done) {
       var property = new Anore.Primitive("hello");
 
