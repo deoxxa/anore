@@ -288,12 +288,12 @@ describe("Model", function() {
   });
 
   describe("#remove(key)", function() {
-    it("should trigger a `removed' event on a property that is removed", function(done) {
+    it("should trigger a `removedFrom' event on a property that is removed", function(done) {
       var property = new Anore.Primitive("hello");
 
       var model = new Anore.Model({x: property});
 
-      property.on("removed", function(parent, key) {
+      property.on("removedFrom", function(parent, key) {
         assert.strictEqual(parent, model);
         assert.equal(key, "x");
 
