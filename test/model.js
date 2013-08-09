@@ -285,6 +285,51 @@ describe("Model", function() {
 
       model.get("abc").get("xyz").set("hello");
     });
+
+    it("should trigger a `removedFrom' event on a property that is removed", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var model = new Anore.Model({x: property});
+
+      property.on("removedFrom", function(parent, key) {
+        assert.strictEqual(parent, model);
+        assert.equal(key, "x");
+
+        return done();
+      });
+
+      model.set("x", "hi there");
+    });
+
+    it("should trigger an `addedTo' event on a property that was added to the model", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var model = new Anore.Model({x: "hi there"});
+
+      property.on("addedTo", function(parent, key) {
+        assert.strictEqual(parent, model);
+        assert.equal(key, "x");
+
+        return done();
+      });
+
+      model.set("x", property);
+    });
+
+    it("should trigger a `replaced' event on a property that was replacing another", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var model = new Anore.Model({x: "hi there"});
+
+      property.on("replaced", function(parent, key) {
+        assert.strictEqual(parent, model);
+        assert.equal(key, "x");
+
+        return done();
+      });
+
+      model.set("x", property);
+    });
   });
 
   describe("#remove(key)", function() {
