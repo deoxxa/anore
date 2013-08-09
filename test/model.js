@@ -207,5 +207,83 @@ describe("Model", function() {
 
       property.set("hello");
     });
+
+    it("should not propagate a `change' event if a primitive changes and the primitive has been removed", function(done) {
+      var property = new Anore.Primitive("abc");
+
+      var timeoutHandle = setTimeout(done, 5);
+
+      var model = new Anore.Model({abc: property});
+
+      model.set("abc", "testing");
+
+      model.on("change", function(name, value) {
+        clearTimeout(timeoutHandle);
+        return done(Error("should not fire an event"));
+      });
+
+      property.set("hello");
+    });
+
+    it("should not propagate a `change' event if a primitive changes and it has been told to be silent", function(done) {
+      var property = new Anore.Primitive("abc");
+
+      var timeoutHandle = setTimeout(done, 5);
+
+      var model = new Anore.Model({abc: property}, {bubbleEvents: false});
+
+      model.on("change", function(name, value) {
+        clearTimeout(timeoutHandle);
+        return done(Error("should not fire an event"));
+      });
+
+      property.set("hello");
+    });
+
+    it("should propagate a `change' event if a nested model changes", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var model = new Anore.Model({abc: {xyz: property}});
+
+      model.on("change", function(name, value) {
+        assert.isArray(name);
+        assert.deepEqual(name, ["abc", "xyz"]);
+        assert.strictEqual(value, property);
+
+        return done();
+      });
+
+      model.get("abc").get("xyz").set("derp");
+    });
+
+    it("should not propagate a `change' event if a nested model changes and the nested model has been removed", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var timeoutHandle = setTimeout(done, 5);
+
+      var model = new Anore.Model({abc: {xyz: property}});
+
+      model.on("change", function(name, value) {
+        clearTimeout(timeoutHandle);
+        return done(Error("should not fire an event"));
+      });
+
+      model.get("abc").get("xyz").set("hello");
+    });
+
+    it("should not propagate a `change' event if a nested model changes and it has been told to be silent", function(done) {
+      var property = new Anore.Primitive("hello");
+
+      var timeoutHandle = setTimeout(done, 5);
+
+      var model = new Anore.Model({abc: {xyz: property}}, {bubbleEvents: false});
+
+      model.on("change", function(name, value) {
+        clearTimeout(timeoutHandle);
+        return done(Error("should not fire an event"));
+      });
+
+      model.get("abc").get("xyz").set("hello");
+    });
   });
 });
