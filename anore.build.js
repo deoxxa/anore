@@ -499,6 +499,8 @@ Model.prototype.each = function each(fn) {
 };
 
 Model.prototype.move = function move(oldKey, newKey, options) {
+  options = options || {};
+
   if (oldKey === newKey) {
     return;
   }
