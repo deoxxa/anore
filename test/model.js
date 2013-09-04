@@ -215,7 +215,7 @@ describe("Model", function() {
 
       var model = new Anore.Model({abc: property});
 
-      model.set("abc", "testing");
+      model.set("abc", new Anore.Primitive("testing"));
 
       model.on("change", function(name, value) {
         clearTimeout(timeoutHandle);
@@ -315,7 +315,7 @@ describe("Model", function() {
         return done();
       });
 
-      model.set("x", "hi there");
+      model.set("x", new Anore.Primitive("hi there"));
     });
 
     it("should trigger an `addedTo' event on a property that was added to the model", function(done) {
