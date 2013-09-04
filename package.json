@@ -1,6 +1,6 @@
 {
   "name": "anore",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Models. Or at least part of them.",
   "main": "anore.js",
   "repository": {
