@@ -347,6 +347,20 @@ describe("Model", function() {
 
       model.set("x", property);
     });
+
+    it("should not destroy existing nested models if a plain object is passed in as the value", function(done) {
+      var model = new Anore.Model({a: {b: "hello!"}});
+
+      var property = model.get("a.b");
+
+      model.set("a", {b: "hi there!"});
+
+      var newProperty = model.get("a.b");
+
+      assert.strictEqual(property, newProperty);
+
+      return done();
+    });
   });
 
   describe("#remove(key)", function() {
