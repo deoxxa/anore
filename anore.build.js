@@ -87,9 +87,6 @@ Collection.prototype.setElements = function setElements(elements) {
 };
 
 Collection.prototype.makeModel = function makeModel(value) {
-  // jeez. working around browserify. ouch.
-  var Model = require("./model");
-
   if (typeof value === "object" && (value instanceof Primitive || value instanceof Model || value instanceof Collection)) {
     return value;
   } else if (typeof value !== "object" || value === null) {
@@ -270,8 +267,7 @@ EE.prototype.emit = function emit(name) {
 
 },{}],4:[function(require,module,exports){
 var EE = require("./ee"),
-    Primitive = require("./primitive"),
-    Collection = require("./collection");
+    Primitive = require("./primitive");
 
 var Model = module.exports = function Model(attributes, options) {
   EE.call(this);
@@ -331,6 +327,11 @@ Model.prototype.get = function get(path) {
 };
 
 Model.prototype.set = function set(key, value, options) {
+
+  // work around for circular dependency
+  // between Collection/Model
+  var Collection = require("./collection");
+
   options = options || {};
 
   // unbox `Primitive` values
