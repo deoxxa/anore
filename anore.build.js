@@ -269,6 +269,11 @@ EE.prototype.emit = function emit(name) {
 var EE = require("./ee"),
     Primitive = require("./primitive");
 
+// dumb deep equal for comparing models.
+function deepEqual(a, b) {
+  return JSON.stringify(a) === JSON.stringify(b)
+}
+
 var Model = module.exports = function Model(attributes, options) {
   EE.call(this);
 
@@ -362,7 +367,7 @@ Model.prototype.set = function set(key, value, options) {
 
   // skip out if there's no change
 
-  if (previousValue === value) {
+  if (deepEqual(previousValue, value)) {
     return this;
   }
 
